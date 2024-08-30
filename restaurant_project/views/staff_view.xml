@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rest_staff_form_view_id" model="ir.ui.view">
+        <field name="name">res.staff.form.view</field>
+        <field name="model">res.staff</field>
+        <field name="arch" type="xml">
+            <form string="Staff Information">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                            <field name="age" string="Age"/>
+                            <field name="dob" string="Date of Birth"/>
+                        </group>
+                        <group>
+                            <field name="mobile" string="Mobile Number"/>
+                            <field name="email" string="Email"/>
+                            <field name="country_id" string="Country"/>
+                            <field name="country_ids" string="Countries" widget="many2many_tags"/>
+                            <field name="country_code" string="Country code"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Staff Line">
+                            <field name="staff_line_ids">
+                                <tree string="Staff Line">
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                </tree>
+                                <form string="Staff Line">
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="product_id"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="rest_staff_tree_view_id" model="ir.ui.view">
+        <field name="name">res.staff.tree.view</field>
+        <field name="model">res.staff</field>
+        <field name="arch" type="xml">
+            <tree string="Staff">
+                <field name="name" string="Name"/>
+                <field name="age" string="Age"/>
+                <field name="dob" string="Date of Birth"/>
+                <field name="mobile" string="Mobile Number"/>
+                <field name="email" string="Email"/>
+                <!--                Many2one field-->
+                <field name="country_id" string="Country" widget="many2onebutton"/>
+                <!--                Many2many field-->
+                <field name="country_ids" string="Countries"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="res_staff_action_id" model="ir.actions.act_window">
+        <field name="name">Our Team</field>
+        <field name="res_model">res.staff</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
