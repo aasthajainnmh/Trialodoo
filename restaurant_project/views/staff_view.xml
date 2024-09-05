@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rest_staff_form_view_id" model="ir.ui.view">
+        <field name="name">res.staff.form.view</field>
+        <field name="model">res.staff</field>
+        <field name="arch" type="xml">
+            <form string="Staff Information">
+                <header>
+                    <button name="new_fun" string="Pass a value button" type="object" class="oe_highlight"/>
+                    <button name="delete_one2many" string="Delete line" type="object"/>
+                    <field name="status" widget="statusbar"/>
+                    <button name="do_resign" string="Resign" type="object" class="oe_highlight"
+                            invisible="status!='active'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                            <field name="age" string="Age"/>
+                            <field name="dob" string="Date of Birth"/>
+                            <field name="gender" string="Gender"/>
+                        </group>
+                        <group>
+                            <field name="mobile" string="Mobile Number"/>
+                            <field name="email" string="Email"/>
+                            <field name="country_id" string="Country"/>
+                            <field name="country_ids" string="Countries" widget="many2many_tags"/>
+                            <field name="country_code" string="Country code"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Staff Line">
+                            <field name="staff_line_ids">
+                                <tree string="Staff Line" editable="bottom" widget="section_and_note_one2many">
+                                    <control>
+                                        <create string="Add a line"/>
+                                        <create string="Add a Section"
+                                                context="{'default_display_type':'line_section'}"/>
+                                        <create string="Add a note" context="{'default_display_type':'line_note'}"/>
+                                    </control>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                </tree>
+                                <form string="Staff Line">
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="product_id"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="rest_staff_tree_view_id" model="ir.ui.view">
+        <field name="name">res.staff.tree.view</field>
+        <field name="model">res.staff</field>
+        <field name="arch" type="xml">
+            <tree string="Staff Tree" decoration-info="status=='active'" decoration-danger="status=='resigned'">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Name"/>
+                <field name="age" string="Age"/>
+                <field name="gender" string="Gender"/>
+                <field name="dob" string="Date of Birth"/>
+                <field name="mobile" string="Mobile Number"/>
+                <field name="email" string="Email"/>
+                <!--                Many2one field-->
+                <field name="country_id" string="Country" widget="many2onebutton"/>
+                <!--                Many2many field-->
+                <field name="country_ids" string="Countries"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="rest_staff_search_view_id" model="ir.ui.view">
+        <field name="name">res.staff.search.view</field>
+        <field name="model">res.staff</field>
+        <field name="arch" type="xml">
+            <search string="Staff search">
+                <field name="name"/>
+                <field name="age"/>
+                <field name="mobile"/>
+                <field name="email" filter_domain="['|',('mobile','ilike','self'),('email','ilike','self')]"/>
+                <separator>
+                    <filter string="Male" name="male" domain="[('gender','=','male')]"/>
+                    <filter string="Female" name="female" domain="[('gender','=','female')]"/>
+                </separator>
+                <filter string="Active" name="male" domain="[('status','=','active')]"/>
+                <filter string="Resigned" name="female" domain="[('status','=','resigned')]"/>
+                <group>
+                    <filter string="Gender" name="gender" context="{'group_by':'gender'}"/>
+                    <filter string="Status" name="status" context="{'group_by':'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="rest_staff_kanban_view_id" model="ir.ui.view">
+        <field name="name">res.staff.kanban.view</field>
+        <field name="model">res.staff</field>
+        <field name="arch" type="xml">
+           <kanban string="Staff kanban" class="o_res_partner_kanban">
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div>
+                            Name:<field name="name"/>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+           </kanban>
+        </field>
+    </record>
+
+    <record id="res_staff_action_id" model="ir.actions.act_window">
+        <field name="name">Our Team</field>
+        <field name="res_model">res.staff</field>
+        <field name="view_mode">tree,form,search,kanban</field>
+        <field name="context">{'search_default_male':1,'search_default_female':1}</field>
+    </record>
+</odoo>
